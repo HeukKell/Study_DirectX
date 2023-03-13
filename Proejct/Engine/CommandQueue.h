@@ -104,7 +104,6 @@ private:
 	HANDLE								_fenceEvent = INVALID_HANDLE_VALUE;
 
 	shared_ptr<SwapChain>				_swapChain;
-	shared_ptr<DescriptorHeap>			_descHeap;
 	
 
 public:
@@ -112,8 +111,7 @@ public:
 	// 초기화 함수
 	void Init(
 		ComPtr<ID3D12Device> device,
-		shared_ptr<SwapChain> swapChain,
-		shared_ptr<DescriptorHeap> descHeap
+		shared_ptr<SwapChain> swapChain
 	);
 
 

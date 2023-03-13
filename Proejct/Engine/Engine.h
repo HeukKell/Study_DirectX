@@ -15,10 +15,9 @@ private:
 	D3D12_RECT		_scissorRect = {};
 
 	
-	shared_ptr<class Device>			_device;
-	shared_ptr<class CommandQueue>		_cmdQueue;
-	shared_ptr<class SwapChain>			_swapChain;
-	shared_ptr<class DescriptorHeap>	_descHeap;
+	shared_ptr<class Device>			_device;		// 인력사무소대표
+	shared_ptr<class CommandQueue>		_cmdQueue;		// GPU 에 보낼요청 을 관리
+	shared_ptr<class SwapChain>			_swapChain;		// DoubleBuffering 용도. Buffer swap
 
 
 public:

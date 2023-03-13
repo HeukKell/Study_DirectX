@@ -39,12 +39,54 @@ private:
 		그릴 대상, 특수종이		 
 	*/ 
 	ComPtr<IDXGISwapChain>	_swapChain;
-	ComPtr<ID3D12Resource>	_renderTargets[SWAP_CHAIN_BUFFER_COUNT]; 
+
+
+	/*
+		리소스를 서술하는 Descriptor ( 기안서 )
+		
+		- 외주를 맡길 때 이런 저런 정보들을 같이 넘겨줘야 하는데, 아무런 형태로나 요청하면 알아듣지 못한다.
+		- 각종 리소스를 어떤 용도로 사용해야 하는지 꼼꼼하게 적어서 넘겨주는 용도
+		- 규격, 양식
+		- DX12 에서 추가된 개념
+		- DX11 이전에서는 View 라는 용어로 활용했지만, DX12 에서는 서술자Heap 이라고 부른다
+		- 리소스를 한번더 랩핑해서, 그 리소스가 무엇인지 적은 기안서를 제출하는 방식
+
+		- GPU 한테 일을 맡길때 GPU 가 알수 있게 RenderTarget을 서술을추가하여 랩핑하기위한 인터페이스 Descriptor Heap
+		
+		rtv : Render Target View
+		Descriptor 는 리소스를 설명하는 역할을 한다.
+		_rtvHeap [ [RTV]  [RTV] ]
+	*/
+	
+	ComPtr<ID3D12Resource>			_rtBuffer[SWAP_CHAIN_BUFFER_COUNT]; 
+	ComPtr<ID3D12DescriptorHeap>	_rtvHeap;
+	D3D12_CPU_DESCRIPTOR_HANDLE		_rtvHandle[SWAP_CHAIN_BUFFER_COUNT];
+
 	uint32					_backBufferIdx = 0;
+
+private:
+
+	/**
+	  SwapChain 생성 함수
+	*/
+	void CreateSwapChain(
+		const WindowInfo& window, 
+		ComPtr<IDXGIFactory> dxgi, 
+		ComPtr<ID3D12CommandQueue> cmdQueue
+	);
+
+	/**
+		RenderTargetView 생성 함수
+		RenderTarget 의 Descriptor를 작성하는 함수
+		본래 DescripterHeap 클래스에 있던 함수였지만, 옮겨왔다.
+	*/
+	void CreateRTV(ComPtr<ID3D12Device> device);
+
 
 public:
 	void Init(
 		const WindowInfo& window,
+		ComPtr<ID3D12Device> device,
 		ComPtr<IDXGIFactory> dxgi,
 		ComPtr<ID3D12CommandQueue> cmdQueue
 	);
@@ -57,14 +99,12 @@ public:
 	ComPtr<IDXGISwapChain> getSwapChain() { return _swapChain; }
 	
 	/** index 에 해당하는 렌더타겟을 반환합니다. */
-	ComPtr<ID3D12Resource> GetRenderTarget(int32 index) { return _renderTargets[index]; }
-
-	/** 현재 작업중인 RenderTarget 의 idx 를 요청합니다. */
-	uint32 GetCurrentBackBufferIndex() { return _backBufferIdx; }
+	ComPtr<ID3D12Resource> GetRenderTarget(int32 index) { return _rtBuffer[index]; }
 	
 	/** GPU 가 작업중인 renderTarget 을 요청합니다.*/
-	ComPtr<ID3D12Resource> GetCurrentBackBufferResource() { return _renderTargets[_backBufferIdx]; };
+	ComPtr<ID3D12Resource> GetBackRTBuffer() { return _rtBuffer[_backBufferIdx]; };
 
+	D3D12_CPU_DESCRIPTOR_HANDLE GetBackRTV() { return _rtvHandle[_backBufferIdx]; }
 
 };
 

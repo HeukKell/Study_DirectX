@@ -1,9 +1,6 @@
 ﻿#include "pch.h"
 #include "CommandQueue.h"
 #include "SwapChain.h"
-#include "DescriptorHeap.h"
-
-
 
 CommandQueue::~CommandQueue()
 {
@@ -19,11 +16,10 @@ CommandQueue::~CommandQueue()
 	device 를 이용해서 CommandQueue 를 만들어 주는것이니 device 를 인수로 설정
 
 */
-void CommandQueue::Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain, shared_ptr<DescriptorHeap> descHeap)
+void CommandQueue::Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChain> swapChain)
 {
 
 	_swapChain = swapChain;
-	_descHeap = descHeap;
 
 	// 어떤식으로 만들어 줄것인지 우선 정한다음
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
@@ -138,12 +134,13 @@ void CommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect)
 		
 		D3D12_RESOURCE_BARRIER는 개별적인 명령어 객체가 아닌, 
 		리소스 상태 전환정보를 담은 구조체입니다. 
+		리소스 전환 명령에 대한 구조체 생성함수 CD3DX12_RESOURCE_BARRIER::Transition()
 		ResourceBarrier 함수의 매개 변수로 사용됩니다
 
 
 	*/ 
 	D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		_swapChain->GetCurrentBackBufferResource().Get(),	// renderTarget
+		_swapChain->GetBackRTBuffer().Get(),	// renderTarget
 		D3D12_RESOURCE_STATE_PRESENT, // 화면출력
 		D3D12_RESOURCE_STATE_RENDER_TARGET // 외주 결과물
 	);
@@ -168,7 +165,7 @@ void CommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect)
 	// Specify the buffers we are going to render to
 	// 어떤 버퍼에다가 그림을 그릴지를 다시한번 명시해 주어야 한다.
 	// 백버퍼를 들고와서
-	D3D12_CPU_DESCRIPTOR_HANDLE backBufferView = _descHeap->GetBackBufferView();
+	D3D12_CPU_DESCRIPTOR_HANDLE backBufferView = _swapChain->GetBackRTV();
 
 	// 백버퍼 에다가 그림을 그려달라고 하는것이다.
 	_cmdList->ClearRenderTargetView(backBufferView, Colors::LightSteelBlue, 0, nullptr);
@@ -183,7 +180,7 @@ void CommandQueue::RenderEnd()
 		화면 출력 렌더타겟으로 바꿔치기 해 주겠다는 의미.
 	*/
 	D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		_swapChain->GetCurrentBackBufferResource().Get(),
+		_swapChain->GetBackRTBuffer().Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, // 외주 결과물
 		D3D12_RESOURCE_STATE_PRESENT // 화면출력
 	);
