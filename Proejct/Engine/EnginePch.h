@@ -60,4 +60,8 @@ enum
 
 extern unique_ptr<class Engine> GEngine; //  전방선언와 외부선언
 
+#define DEVICE GEngine->GetDevice()->GetDevice()
+#define CMD_LIST GEngine->GetCmdQueue()->GetCmdList()
+
+
 void HelloEngine();

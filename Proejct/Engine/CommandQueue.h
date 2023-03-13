@@ -129,6 +129,7 @@ public:
 	void RenderEnd();
 
 	ComPtr<ID3D12CommandQueue> GetCmdQue() { return _cmdQueue; }
+	ComPtr<ID3D12GraphicsCommandList> GetCmdList() { return _cmdList; }
 	
 };
 

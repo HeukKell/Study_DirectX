@@ -1,9 +1,8 @@
 ﻿#pragma once
 
-
-
-
-
+#include "Device.h"
+#include "CommandQueue.h"
+#include "CommandQueue.h"
 
 class Engine
 {
@@ -15,9 +14,9 @@ private:
 	D3D12_RECT		_scissorRect = {};
 
 	
-	shared_ptr<class Device>			_device;		// 인력사무소대표
-	shared_ptr<class CommandQueue>		_cmdQueue;		// GPU 에 보낼요청 을 관리
-	shared_ptr<class SwapChain>			_swapChain;		// DoubleBuffering 용도. Buffer swap
+	shared_ptr<Device>				_device;		// 인력사무소대표
+	shared_ptr<CommandQueue>		_cmdQueue;		// GPU 에 보낼요청 을 관리
+	shared_ptr<SwapChain>			_swapChain;		// DoubleBuffering 용도. Buffer swap
 
 
 public:
@@ -26,6 +25,10 @@ public:
 	void Render();
 
 	void ResizeWindow(int32 width, int32 height); // 윈도우 크기창을 다시 설정하는 함수
+
+	shared_ptr<Device>			GetDevice()		{ return _device; }
+	shared_ptr<CommandQueue>	GetCmdQueue()	{ return _cmdQueue; }
+	shared_ptr<SwapChain>		GetSwapChain()	{ return _swapChain; }
 
 public:
 
