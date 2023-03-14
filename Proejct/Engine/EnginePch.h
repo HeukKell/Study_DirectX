@@ -41,9 +41,9 @@ using uint8		= unsigned __int8;
 using uint16	= unsigned __int16;
 using uint32	= unsigned __int32;
 using uint64	= unsigned __int64;
-using Vec2		= XMFLOAT2;
-using Vec3		= XMFLOAT3;
-using Vec4		= XMFLOAT4;
+using Vec2		= XMFLOAT2;	// float 가 2개 모인것 {x,y}
+using Vec3		= XMFLOAT3;	// float 가 3개 모인것 {x,y,z}
+using Vec4		= XMFLOAT4; // float 가 4개 모인것 {r,g,b,a}
 using Matrix	= XMMATRIX;
 
 struct WindowInfo {
@@ -51,6 +51,11 @@ struct WindowInfo {
 	int32 width;	// 너비
 	int32 height;	// 높이
 	bool windowed;	// 창모드 or 전체화면
+};
+
+struct Vertex {
+	Vec3 pos;
+	Vec4 color;
 };
 
 enum 
@@ -62,6 +67,7 @@ extern unique_ptr<class Engine> GEngine; //  전방선언와 외부선언
 
 #define DEVICE GEngine->GetDevice()->GetDevice()
 #define CMD_LIST GEngine->GetCmdQueue()->GetCmdList()
+#define ROOT_SIGNATURE GEngine->GetRootSignature()->GetSignature()
 
 
 void HelloEngine();

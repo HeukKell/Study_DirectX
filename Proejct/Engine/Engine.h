@@ -3,6 +3,10 @@
 #include "Device.h"
 #include "CommandQueue.h"
 #include "CommandQueue.h"
+#include "RootSignature.h"
+
+#include "Mesh.h"
+#include "Shader.h"
 
 class Engine
 {
@@ -17,7 +21,7 @@ private:
 	shared_ptr<Device>				_device;		// 인력사무소대표
 	shared_ptr<CommandQueue>		_cmdQueue;		// GPU 에 보낼요청 을 관리
 	shared_ptr<SwapChain>			_swapChain;		// DoubleBuffering 용도. Buffer swap
-
+	shared_ptr<RootSignature>		_rootSignature; // 계약서, 서명
 
 public:
 
@@ -29,6 +33,7 @@ public:
 	shared_ptr<Device>			GetDevice()		{ return _device; }
 	shared_ptr<CommandQueue>	GetCmdQueue()	{ return _cmdQueue; }
 	shared_ptr<SwapChain>		GetSwapChain()	{ return _swapChain; }
+	shared_ptr<RootSignature>	GetRootSignature(){ return _rootSignature; }
 
 public:
 
