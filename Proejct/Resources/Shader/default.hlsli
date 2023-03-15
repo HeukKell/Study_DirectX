@@ -1,4 +1,4 @@
-ï»¿// ë‹¨ê³„ë³„ë¡œ ë­˜ í•´ì•¼í• ì§€ ì¼ ë‚´ìš©ì„ ê¸°ìˆ í•©ë‹ˆë‹¤.
+// ´Ü°èº°·Î ¹» ÇØ¾ßÇÒÁö ÀÏ ³»¿ëÀ» ±â¼úÇÕ´Ï´Ù.
 
 struct VS_IN
 {
@@ -13,10 +13,10 @@ struct VS_OUT
 };
 
 
-// vertex shader ì—ì„œ ë­˜ í•´ì•¼í• ì§€
+// vertex shader ¿¡¼­ ¹» ÇØ¾ßÇÒÁö
 /*
-    ì¼ë°˜ CPP ë¬¸ë²•ê³¼ ë¹„ìŠ·í•˜ë‹¤
-    ì´ë¦„ì„ ë°”ê¿”ì¤„ ìˆ˜ë„ ìˆë‹¤.
+    ÀÏ¹İ CPP ¹®¹ı°ú ºñ½ÁÇÏ´Ù
+    ÀÌ¸§À» ¹Ù²ãÁÙ ¼öµµ ÀÖ´Ù.
 */
 VS_OUT VS_Main(VS_IN input)
 {
@@ -28,7 +28,7 @@ VS_OUT VS_Main(VS_IN input)
     return output;
 }
 
-// pixel shaer ì—ì„œ ë­˜ í•´ì•¼í• ì§€
+// pixel shaer ¿¡¼­ ¹» ÇØ¾ßÇÒÁö
 float4 PS_Main(VS_OUT input) : SV_Target
 {
     return input.color;
