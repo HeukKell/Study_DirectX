@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
+#include "Engine.h"
 #include "CommandQueue.h"
 #include "SwapChain.h"
+
 
 CommandQueue::~CommandQueue()
 {
@@ -144,6 +146,10 @@ void CommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect)
 		D3D12_RESOURCE_STATE_PRESENT, // 화면출력
 		D3D12_RESOURCE_STATE_RENDER_TARGET // 외주 결과물
 	);
+
+	// 잠깐 루트시그니쳐 설정 ( 셰이더 프로그램 함수 인수 설정 )
+	_cmdList->SetGraphicsRootSignature(ROOT_SIGNATURE.Get());
+	GEngine->GetConstantBuffer()->Clear();
 
 	/*
 		ResourceBarrier는 ID3D12GraphicsCommandList 인터페이스에서 제공하는 함수 중 하나로, 

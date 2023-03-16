@@ -58,6 +58,10 @@ struct Vertex {
 	Vec4 color;
 };
 
+struct Transform {
+	Vec4 offset ;// shader 쏙 이름이랑 같을필요 없다.
+};
+
 enum 
 {
 	SWAP_CHAIN_BUFFER_COUNT = 2

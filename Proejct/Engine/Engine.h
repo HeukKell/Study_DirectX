@@ -5,6 +5,8 @@
 #include "CommandQueue.h"
 #include "RootSignature.h"
 
+#include "ConstantBuffer.h"
+
 #include "Mesh.h"
 #include "Shader.h"
 
@@ -22,6 +24,7 @@ private:
 	shared_ptr<CommandQueue>		_cmdQueue;		// GPU 에 보낼요청 을 관리
 	shared_ptr<SwapChain>			_swapChain;		// DoubleBuffering 용도. Buffer swap
 	shared_ptr<RootSignature>		_rootSignature; // 계약서, 서명
+	shared_ptr<ConstantBuffer>		_cb;			// constant buffer
 
 public:
 
@@ -34,6 +37,7 @@ public:
 	shared_ptr<CommandQueue>	GetCmdQueue()	{ return _cmdQueue; }
 	shared_ptr<SwapChain>		GetSwapChain()	{ return _swapChain; }
 	shared_ptr<RootSignature>	GetRootSignature(){ return _rootSignature; }
+	shared_ptr<ConstantBuffer>	GetConstantBuffer() { return _cb; }
 
 public:
 
