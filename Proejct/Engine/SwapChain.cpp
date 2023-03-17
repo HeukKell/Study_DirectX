@@ -116,7 +116,7 @@ void SwapChain::CreateRTV(ComPtr<ID3D12Device> device)
 	for (int i = 0; i < SWAP_CHAIN_BUFFER_COUNT; i++)
 	{
 		_rtvHandle[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeapBegin, i * rtvHeapSize);
-		// 렌더타겟 뷰 생성, 묘사 즉, RTV 배열에다가 각각 렌더타겟을 채워주고 있다.
+		// 렌더타겟 뷰 생성, 묘사 즉, RTV 배열에다가 각각 렌더타겟뷰를 채워주고 있다.
 		device->CreateRenderTargetView(_rtBuffer[i].Get(), nullptr, _rtvHandle[i]);
 
 	}

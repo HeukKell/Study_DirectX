@@ -2,6 +2,7 @@
 //
 #include "pch.h"
 #include "framework.h"
+#include "resource.h"
 #include "Client.h"
 #include "Game.h"
 
@@ -13,11 +14,33 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
+HWND g_hWnd;
+extern HWND CustomDialog = nullptr;
+
+vector<wstring> customDebugMessages;
+#define MaxDebugMessageLength 256
+#define MaxDebugMessageCount 16;
+
+bool setDebugText(const TCHAR* message, int strLength)
+{
+    if (strLength < MaxDebugMessageLength)
+    {
+        customDebugMessages.push_back(wstring(message));
+    }
+    else {
+        return false;
+    }
+
+    InvalidateRect(CustomDialog, nullptr, true);
+    return true;
+}
+
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK    DIAProc(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -91,7 +114,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         game->Update();
     }
 
-
     return (int) msg.wParam;
 }
 
@@ -140,6 +162,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   
+   g_hWnd = hWnd;
 
    if (!hWnd)
    {
@@ -168,6 +192,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_CREATE: {
+        CreateDialog(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, DIAProc);
+
+        break;
+    }
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -218,6 +247,86 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             return (INT_PTR)TRUE;
         }
         break;
+    }
+    return (INT_PTR)FALSE;
+}
+
+
+// 커스텀 다이얼로그 메시지 처리기
+INT_PTR CALLBACK DIAProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+
+
+    UNREFERENCED_PARAMETER(lParam);
+    
+    
+    switch (message)
+    {
+    case WM_INITDIALOG:
+
+        SetWindowText(hDlg, TEXT("Debug Window"));
+        CustomDialog = hDlg;
+        setDebugText(TEXT("hello DebugWindow"), 17);
+
+        return (INT_PTR)TRUE;
+
+    case WM_PAINT: {
+
+        PAINTSTRUCT ps;
+
+        HDC hdc = BeginPaint(hDlg, &ps);
+
+        // 그리기
+        
+        if (customDebugMessages.size() > 0)
+        {
+            int line = 16;
+            int count = MaxDebugMessageCount;
+            for (int i = customDebugMessages.size()-1; i >=0; i--)
+            {
+                TCHAR buffer[MaxDebugMessageLength];
+                wsprintf(buffer, customDebugMessages[i].c_str());
+                
+                TextOut(hdc, 10, line, buffer, lstrlen(buffer));
+                line+=16;
+            
+                --count;
+                if (0 >= count)
+                {
+                    break;
+                }
+            }
+        
+        }
+
+
+        EndPaint(hDlg, &ps);
+        break;
+    }
+    case WM_COMMAND:
+        int id = LOWORD(wParam);
+
+        switch (id)
+        {
+        case IDOK: {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+            break;
+        }
+        case IDCANCEL: {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+            break;
+        }
+        default: {
+            break;
+        }
+        }
+
+        ///-----------------------------------switch
+
+
+
     }
     return (INT_PTR)FALSE;
 }
