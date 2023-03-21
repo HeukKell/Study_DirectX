@@ -9,7 +9,7 @@ void RootSignature::Init(ComPtr<ID3D12Device> device)
 	// 루트 시그니쳐,즉 셰이더 프로그래밍 함수의 서명 방법
 	switch (ROOTSIGNATURETYPE)
 	{
-	case (uint32)ROOTSIGNATURE_TYPE::DEFAULT : {
+	case (uint32)EROOTSIGNATURE_TYPE::DEFAULT : {
 		// 가장 기본적인 셰이더 함수 서명을 하는경우
 		/*
 		  CD3DX12_ROOT_SIGNATURE_DESC(D3D12_DEFAULT) 함수는 d3dx12.h 헤더파일에 선언되어 있으며,
@@ -22,7 +22,7 @@ void RootSignature::Init(ComPtr<ID3D12Device> device)
 		 sigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT; // 입력 조립기 단계
 		break;
 	}
-	case (uint32)ROOTSIGNATURE_TYPE::USE_CONSTANTBUFFERVIEW: {
+	case (uint32)EROOTSIGNATURE_TYPE::USE_CONSTANTBUFFERVIEW: {
 		// 2개의 constant buffer view 를 가진 셰이더 함수 서명을 하는 경우
 		/*
 			InitAsConstantBufferView(
@@ -44,7 +44,7 @@ void RootSignature::Init(ComPtr<ID3D12Device> device)
 		sigDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT; // 입력 조립기 단계
 		break;
 	}
-	case (uint32)ROOTSIGNATURE_TYPE::USE_ROOTTABLE: {
+	case (uint32)EROOTSIGNATURE_TYPE::USE_ROOTTABLE: {
 		// table 을 이용한 루트시그니쳐 설정
 		// 여러개의 레지스터 슬롯을 테이블로 묶어 하나의 인수로 설정하는 방법.
 		// 활성화 에 따라 사용하는 테이블이 달라질 수 있다.

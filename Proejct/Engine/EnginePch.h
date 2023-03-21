@@ -74,7 +74,7 @@ enum class CBV_REGISTER {
 };
 
 /** 현재 Root Signature 를 어떤 타입을 쓰고있는지 제시하는 열거형 */
-enum class ROOTSIGNATURE_TYPE {
+enum class EROOTSIGNATURE_TYPE {
 
 	DEFAULT, // 기본 서명 방식
 	USE_CONSTANTBUFFERVIEW, // constant buffer view 를 사용하는 방식
@@ -88,7 +88,7 @@ enum
 	CBV_REGISTER_COUNT = CBV_REGISTER::END,
 	REGISTERCOUNT  = CBV_REGISTER :: END, // 총 레지스터 개수, 추후에 값이 바뀔수 있음
 	
-	ROOTSIGNATURETYPE = ROOTSIGNATURE_TYPE::USE_CONSTANTBUFFERVIEW // 현재 사용할 루트 시그니쳐 타입
+	ROOTSIGNATURETYPE = EROOTSIGNATURE_TYPE::USE_CONSTANTBUFFERVIEW // 현재 사용할 루트 시그니쳐 타입
 };
 
 

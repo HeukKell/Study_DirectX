@@ -131,14 +131,14 @@ D3D12_CPU_DESCRIPTOR_HANDLE ConstantBuffer::PushData(int32 rootParamIndex, void*
 	// RootSignature 의 타입에 따라 달리합니다.
 	switch (ROOTSIGNATURETYPE)
 	{
-	case (uint32)ROOTSIGNATURE_TYPE::USE_CONSTANTBUFFERVIEW: {
+	case (uint32)EROOTSIGNATURE_TYPE::USE_CONSTANTBUFFERVIEW: {
 
 		D3D12_GPU_VIRTUAL_ADDRESS address = GetGpuVirtualAddress(_currentIndex);
 		CMD_LIST->SetGraphicsRootConstantBufferView(rootParamIndex, address); // 각 슬롯에 버퍼의 주소를 넣는다.
 
 		break;
 	}
-	case (uint32)ROOTSIGNATURE_TYPE::USE_ROOTTABLE: {
+	case (uint32)EROOTSIGNATURE_TYPE::USE_ROOTTABLE: {
 
 		// 넣은 주소를 table Descriptor heap 에게 전달해 주어야 한다.
 		// 데이터를 넣은 위치를 뽑아.
