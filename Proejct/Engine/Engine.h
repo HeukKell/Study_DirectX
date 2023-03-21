@@ -6,6 +6,7 @@
 #include "RootSignature.h"
 
 #include "ConstantBuffer.h"
+#include "TableDescriptorHeap.h"
 
 #include "Mesh.h"
 #include "Shader.h"
@@ -25,6 +26,7 @@ private:
 	shared_ptr<SwapChain>			_swapChain;		// DoubleBuffering 용도. Buffer swap
 	shared_ptr<RootSignature>		_rootSignature; // 계약서, 서명
 	shared_ptr<ConstantBuffer>		_cb;			// constant buffer
+	shared_ptr<TableDescriptorHeap> _tableDescHeap; // TableDescriptorHeap
 
 public:
 
@@ -38,7 +40,7 @@ public:
 	shared_ptr<SwapChain>		GetSwapChain()	{ return _swapChain; }
 	shared_ptr<RootSignature>	GetRootSignature(){ return _rootSignature; }
 	shared_ptr<ConstantBuffer>	GetConstantBuffer() { return _cb; }
-
+	shared_ptr<TableDescriptorHeap> GetTableDescHeap() { return _tableDescHeap; }
 public:
 
 	/** CommandQueue 에다가 요청사항들을 적어주는 함수*/

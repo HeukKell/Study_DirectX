@@ -62,10 +62,36 @@ struct Transform {
 	Vec4 offset ;// shader 쏙 이름이랑 같을필요 없다.
 };
 
-enum 
-{
-	SWAP_CHAIN_BUFFER_COUNT = 2
+// ConstatntBufferView 등록 관련
+enum class CBV_REGISTER {
+
+	b0,
+	b1,
+	b2,
+	b3,
+	b4,
+	END
 };
+
+/** 현재 Root Signature 를 어떤 타입을 쓰고있는지 제시하는 열거형 */
+enum class ROOTSIGNATURE_TYPE {
+
+	DEFAULT, // 기본 서명 방식
+	USE_CONSTANTBUFFERVIEW, // constant buffer view 를 사용하는 방식
+	USE_ROOTTABLE,	// root table 을 사용하는 방식
+	END
+};
+
+enum
+{
+	SWAP_CHAIN_BUFFER_COUNT = 2,
+	CBV_REGISTER_COUNT = CBV_REGISTER::END,
+	REGISTERCOUNT  = CBV_REGISTER :: END, // 총 레지스터 개수, 추후에 값이 바뀔수 있음
+	
+	ROOTSIGNATURETYPE = ROOTSIGNATURE_TYPE::USE_CONSTANTBUFFERVIEW // 현재 사용할 루트 시그니쳐 타입
+};
+
+
 
 extern unique_ptr<class Engine> GEngine; //  전방선언와 외부선언
 

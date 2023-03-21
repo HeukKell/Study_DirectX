@@ -150,6 +150,17 @@ void CommandQueue::RenderBegin(const D3D12_VIEWPORT* vp, const D3D12_RECT* rect)
 	// 잠깐 루트시그니쳐 설정 ( 셰이더 프로그램 함수 인수 설정 )
 	_cmdList->SetGraphicsRootSignature(ROOT_SIGNATURE.Get());
 	GEngine->GetConstantBuffer()->Clear();
+	GEngine->GetTableDescHeap()->Clear();
+
+	ID3D12DescriptorHeap* descHeap = GEngine->GetTableDescHeap()->GetDescriptorHeap().Get();
+	// 총 두개를 넣어줄 수 있으며, CBV_SRV_UAV 타입 하나랑 SAMPLER 타입 하나
+	/* 
+	CMD_LIST->SetDescriptorHeaps()
+	만약 이함수를 선행으로 호출해주지 않는다면, 
+	TableDescriptorHeap::CommitTable 함수 내 CMD_LIST->SetGraphicsRootDescritorTable() 함수가 crash 가 일어날 것이다.
+	거의 세트로 설정 해주는 함수 페어다.
+	*/
+	_cmdList->SetDescriptorHeaps(1, &descHeap); 
 
 	/*
 		ResourceBarrier는 ID3D12GraphicsCommandList 인터페이스에서 제공하는 함수 중 하나로, 
